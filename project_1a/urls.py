@@ -18,10 +18,10 @@ from django.contrib import admin
 from django.urls import path,include
 from project_1a_app import views
 
-from rest_framework.routers import DefaultRouter
-router=DefaultRouter()
-# router.register('emplist',views.Emplist,basename='empdata')
-router.register('empviewsets',views.Empviewsets,basename='emp')
+# from rest_framework.routers import DefaultRouter
+# router=DefaultRouter()
+# # router.register('emplist',views.Emplist,basename='empdata')
+# router.register('empviewsets',views.Empviewsets,basename='emp')
 
 
 urlpatterns = [
@@ -41,5 +41,7 @@ urlpatterns = [
     # path('empdis/<int:pk>/',views.Emprec.as_view()),
     # path('emprud/<int:pk>/',views.Emprud.as_view()),
 
-    path('',include(router.urls)),
+    #path('',include(router.urls)),
+    path('apilist/',views.apiviewlist.as_view()),
+    path('apiurd/<int:id>/',views.apiviewurd.as_view()),
 ]

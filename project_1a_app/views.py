@@ -236,17 +236,58 @@ class Empviewsets(viewsets.ModelViewSet):
 
 #============================================================================
 
+# from django.shortcuts import render
+# from .models import Employee
+# from project_1a_app.serialisers import Emp_serialiser
+# from rest_framework.response import Response
+# from rest_framework import status
+# from rest_framework import viewsets
+# from rest_framework.authentication import BasicAuthentication
+# from rest_framework.permissions import IsAuthenticated
+#
+# class Empviewsets(viewsets.ModelViewSet):
+#     queryset=Employee.objects.all()
+#     serializer_class = Emp_serialiser
+#     # authentication_classes = [BasicAuthentication]
+#     # permission_classes = [IsAuthenticated]
+
+
+#===============================================
+#restapi views
+
+#============================================
+
 from django.shortcuts import render
 from .models import Employee
 from project_1a_app.serialisers import Emp_serialiser
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework import viewsets
-from rest_framework.authentication import BasicAuthentication
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
 
-class Empviewsets(viewsets.ModelViewSet):
-    queryset=Employee.objects.all()
-    serializer_class = Emp_serialiser
-    # authentication_classes = [BasicAuthentication]
-    # permission_classes = [IsAuthenticated]
+class apiviewlist(APIView):
+    def get(self,request):
+        obj=Employee.objects.all()
+        serialiser=Emp_serialiser(obj,many=True)
+        return Response(serialiser.data)
+
+    def post(self,request):
+        obj=Employee.objects.all()
+        serialiser=Emp_serialiser(data=request.data)
+        if serialiser.is_valid():
+            serialiser.save()
+        return Response(serialiser.data)
+
+class apiviewurd(APIView):
+    def get(self,request,id):
+        obj=Employee.objects.get(id=id)
+        serialiser=Emp_serialiser(obj)
+        return Response(serialiser.data)
+
+    def put(self,request,id):
+        obj=Employee.objects.get(id=id)
+        serialiser=Emp_serialiser(obj,data=request.data)
+        return Response(serialiser.data)
+
+    def delete(self,request,id):
+        obj=Employee.objects.get(id=id)
+        obj.delete()
